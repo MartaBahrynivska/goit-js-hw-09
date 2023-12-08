@@ -4,17 +4,17 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import convertMs from './dataConvert';
 
 let getRef = selector => document.querySelector(selector);
-const inputDatePicker = getRef('#datetime-picker');
-const btnStart = getRef('[data-start]');
+const imputDatePickerRef = getRef('#datetime-picker');
+const btnStartRef = getRef('[data-start]');
 const daysRef = getRef('[data-days]');
 const hoursRef = getRef('[data-hours]');
 const minutesRef = getRef('[data-minutes]');
 const secondsRef = getRef('[data-seconds]');
 
+
 let timeDifference = 0;
 let timerId = null;
 let formatDate = null;
-
 
 const options = {
   enableTime: true,
@@ -23,21 +23,25 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     console.log(selectedDates[0]);
+    currentDifferenceDate(selectedDates[0]);
   },
 };
 
-btnStart.setAttribute('disabled', true);
-flatpickr(inputDatePicker, options);
-
-btnStart.addEventListener('click', onBtnStart);
+btnStartRef.setAttribute('disabled', true);
 
 
-window.addEventListener('keydown', event => {
-  if (event.code === 'Escape' && timerId) {
+flatpickr(imputDatePickerRef, options);
+
+
+btnStartRef.addEventListener('click', onBtnStart);
+
+
+window.addEventListener('keydown', e => {
+  if (e.code === 'Escape' && timerId) {
     clearInterval(timerId);
 
-    inputDatePicker.removeAttribute('disabled');
-    btnStart.setAttribute('disabled', true);
+    imputDatePickerRef.removeAttribute('disabled');
+    btnStartRef.setAttribute('disabled', true);
 
     secondsRef.textContent = '00';
     minutesRef.textContent = '00';
@@ -46,15 +50,17 @@ window.addEventListener('keydown', event => {
   }
 });
 
+
 function onBtnStart() {
   timerId = setInterval(startTimer, 1000);
 }
+
 
 function currentDifferenceDate(selectedDates) {
   const currentDate = Date.now();
 
   if (selectedDates < currentDate) {
-    btnStart.setAttribute('disabled', true);
+    btnStartRef.setAttribute('disabled', true);
     return Notify.failure('Please choose a date in the future');
   }
 
@@ -62,12 +68,13 @@ function currentDifferenceDate(selectedDates) {
   formatDate = convertMs(timeDifference);
 
   renderDate(formatDate);
-  btnStart.removeAttribute('disabled');
+  btnStartRef.removeAttribute('disabled');
 }
 
+
 function startTimer() {
-  btnStart.setAttribute('disabled', true);
-  inputDatePicker.setAttribute('disabled', true);
+  btnStartRef.setAttribute('disabled', true);
+  imputDatePickerRef.setAttribute('disabled', true);
 
   timeDifference -= 1000;
 
@@ -80,11 +87,11 @@ function startTimer() {
   }
 }
 
+
 function renderDate(formatDate) {
   secondsRef.textContent = formatDate.seconds;
   minutesRef.textContent = formatDate.minutes;
   hoursRef.textContent = formatDate.hours;
   daysRef.textContent = formatDate.days;
 }
-
 
