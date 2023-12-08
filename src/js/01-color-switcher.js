@@ -14,12 +14,14 @@ function onStartBtnClick() {
     timerId = setInterval(getBackgroundColor, 1000);
 
     dataStartBtn.toggleAttribute('disabled');
+    dataStopBtn.removeAttribute('disabled');
 }
 
 function onStopBtnClick() {
     timerId = clearInterval(timerId);
 
     dataStartBtn.removeAttribute('disabled');
+    dataStopBtn.toggleAttribute('disabled');
 }
 
 function getBackgroundColor() {
