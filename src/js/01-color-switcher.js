@@ -8,7 +8,7 @@ dataStartBtn.addEventListener('click', onStartBtnClick);
 dataStopBtn.addEventListener('click', onStopBtnClick);
 
 let timerId = null;
-
+dataStopBtn.toggleAttribute('disabled');
 
 function onStartBtnClick() {
     timerId = setInterval(getBackgroundColor, 1000);
